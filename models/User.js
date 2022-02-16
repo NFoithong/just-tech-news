@@ -1,7 +1,7 @@
 // bcrypt is an adaptive hash function based on a cryptographic algorithm that 
 // provides additional security measures like a salt to protect against certain attack strategies
-const bcrypt = require('bcrypt');
 const { Model, DataTypes } = require('sequelize');
+const bcrypt = require('bcrypt');
 const sequelize = require('../config/connection');
 
 // create our User model

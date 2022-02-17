@@ -1,6 +1,6 @@
 const router = require('express').Router();
 // const res = require('express/lib/response');
-const { User } = require('../../models');
+const { User, Post, Vote } = require('../../models');
 
 // GET /api/user
 router.get('/', (req, res) => {
@@ -58,7 +58,20 @@ router.post('/login', (req, res) => {
     User.findOne({
             where: {
                 email: req.body.email
-            }
+            },
+            // replace the existing `include` with this
+            // we'll receive the title information of every post they've ever voted on
+            include: [{
+                    model: Post,
+                    attributes: ['id', 'title', 'post_url', 'created_at']
+                },
+                {
+                    model: Post,
+                    attribute: ['title'],
+                    through: Vote,
+                    as: 'voted_posts'
+                }
+            ]
         })
         .then(dbUserData => {
             if (!dbUserData) {

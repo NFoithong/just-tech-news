@@ -11,10 +11,25 @@ require('dotenv').config();
 // });
 
 // update code databse username and password when set up env
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PW, {
-    host: 'localhost',
-    dialect: 'mysql',
-    port: 3306
-});
+// const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PW, {
+//     host: 'localhost',
+//     dialect: 'mysql',
+//     port: 3306
+// });
+
+//  Update the connection logic Heroku will confirm that you want to add JawsDB to your app
+
+let sequelize;
+
+if (process.env.JAWSDB_URL) {
+    sequelize = new Sequelize(process.env.JAWSDB_URL);
+} else {
+    sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PW, {
+        host: 'localhost',
+        dialect: 'mysql',
+        port: 3306
+    });
+}
+
 
 module.exports = sequelize;

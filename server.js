@@ -6,6 +6,20 @@ const sequelize = require('./config/connection');
 // setup handlebars.js
 const exphbs = require('express-handlebars');
 const hbs = exphbs.create({});
+// express-session and connect-session-squelize
+const session = require('express-session');
+
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+
+const sess = {
+    secret: 'Super scret secret',
+    cookie: {},
+    resave: false,
+    saveUninitialized: true,
+    store: new SequelizeStore({
+        db: sequelize
+    })
+};
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -23,6 +37,7 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(express.static('public'));
 app.use(express.static(__dirname + '/public/style.css'));
 
+app.use(session(sess));
 
 // turn on routes
 app.use(routes);

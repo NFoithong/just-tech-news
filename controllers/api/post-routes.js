@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { json } = require('express/lib/response');
 const sequelize = require('../../config/connection');
 const { Post, User, Vote, Comment } = require('../../models');
 // get all users
@@ -82,13 +83,23 @@ router.post('/', (req, res) => {
 // PUT /api/posts/upvote
 //create the vote
 router.put('/upvote', (req, res) => {
+    // make sure the session exists first
+    if (req.session) {
+        // pass session id along with all destructured properties on req.body
+        Post.upvote({...req.body, user_id: req.session.user_id }, { Vote, Comment, User })
+            .then(updateVoteData => res.json(updateVoteData))
+            .catch(err => {
+                consolelog(err);
+                res.status(500).json(err);
+            });
+    }
     // custom static method created in models/Post.js
-    Post.upvote(req.body, { Vote })
-        .then(updatedPostData => res.json(updatedPostData))
-        .catch(err => {
-            console.log(err);
-            res.status(400).json(err);
-        });
+    // Post.upvote(req.body, { Vote })
+    //     .then(updatedPostData => res.json(updatedPostData))
+    //     .catch(err => {
+    //         console.log(err);
+    //         res.status(400).json(err);
+    //     });
 
     // Vote.create below updated by above custom static method
     // Vote.create({

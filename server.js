@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static(__dirname + '/public/style.css'));
 
 // turn on routes
-app.use(routes);
+app.use(require('./controllers'));
 
 // turn on connection to db and server
 sequelize.sync({ force: false }).then(() => {

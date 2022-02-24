@@ -173,6 +173,7 @@ router.delete('/:id', (req, res) => {
                 res.status(404).json({ message: 'No user found with this id' })
                 return;
             }
+            res.json(dbUserData);
         })
         .catch(err => {
             console.log(err);

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const sequelize = require('../config/connection');
-const { Post, User, Comment } = require('../models');
+const { Post, User, Comment, Vote } = require('../models');
 
 router.get('/', (req, res) => {
     // use res.render instead of res.send because we've hooked up a template engine, and specify which template we want to use. In this case, 
@@ -38,7 +38,7 @@ router.get('/', (req, res) => {
     })
 
     .then(dbPostData => {
-            console.log(dbPostData[0]);
+            // console.log(dbPostData[0]);
             const posts = dbPostData.map(post => post.get({ plain: true }));
             // pass a single post object into homepage template
             res.render('homepage', {
@@ -71,7 +71,7 @@ router.get('/post/:id', (req, res) => {
     // };
     // res.render('single-post', { post });
 
-    Post.findAll({
+    Post.findOne({
         //Query configuration
         where: {
             id: req.params.id

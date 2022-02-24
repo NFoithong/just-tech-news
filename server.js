@@ -1,16 +1,17 @@
 const path = require('path');
 const express = require('express');
-const routes = require('./controllers');
-const sequelize = require('./config/connection');
+// const routes = require('./controllers');
+// express-session and connect-session-squelize
+const session = require('express-session');
+
 // setup path to public for stylesheet and html
 // setup handlebars.js
 const exphbs = require('express-handlebars');
-// express-session and connect-session-squelize
-const session = require('express-session');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
 const sess = {
@@ -41,7 +42,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static(__dirname + '/public/style.css'));
 
 // turn on routes
-app.use(require('./controllers'));
+app.use(require('./controllers/'));
 
 // turn on connection to db and server
 sequelize.sync({ force: false }).then(() => {
